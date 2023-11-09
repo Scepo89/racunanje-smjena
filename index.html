@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        select, input, button {
+            margin-bottom: 20px;
+            padding: 8px;
+            font-size: 16px;
+        }
+
+        button {
+            cursor: pointer;
+        }
+
+        p {
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+    <label for="shiftInput">Izaberi trenutnu smjenu:</label>
+    <select id="shiftInput">
+        <option value="1">Sloboda</option>
+        <option value="2">Prva smjena</option>
+        <option value="3">Druga smjena</option>
+    </select>
+
+    <br>
+
+    <label for="futureDateInput">Izaberi datum u budućnosti:</label>
+    <input type="date" id="futureDateInput">
+    <button onclick="calculateFutureShift()">Izračunaj smjenu</button>
+    <p id="futureResult"></p>
+
+    <script>
+        const shifts = ['Sloboda', 'Prva smjena', 'Druga smjena'];
+
+        function calculateFutureShift() {
+            const currentShiftIndex = parseInt(document.getElementById('shiftInput').value) - 1;
+            const futureDateInput = document.getElementById('futureDateInput').value;
+            const futureDate = new Date(futureDateInput);
+
+            const daysDifference = calculateDaysDifference(new Date(), futureDate);
+            const futureShiftIndex = (currentShiftIndex + daysDifference) % shifts.length;
+
+            const resultElement = document.getElementById('futureResult');
+            resultElement.textContent = `Smjena za izabrani datum : (${futureDate.toDateString()})  ${shifts[futureShiftIndex]}`;
+        }
+
+        function calculateDaysDifference(startDate, endDate) {
+            const oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+            return Math.round(Math.abs((startDate - endDate) / oneDay)+1);
+        }
+    </script>
+
+</body>
+</html>
+
